@@ -6,6 +6,7 @@ import {
     View,
     VrButton,
 } from 'react-360';
+import { setSnippets, setCurrent } from './Store';
 
 class Background extends React.Component {
     constructor(props) {
@@ -32,6 +33,10 @@ export default class Slideshow extends React.Component {
       index: 0,
     };
   
+    componentDidMount() {
+      setSnippets(this.props.photos[0].buttons);
+      setCurrent(-1);
+    }
     _prevPhoto = () => {
       let next = this.state.index - 1;
       if (next < 0) {
@@ -40,12 +45,16 @@ export default class Slideshow extends React.Component {
       this.setState({
         index: next,
       });
+      setSnippets(this.props.photos[next % this.props.photos.length].buttons);
+      setCurrent(-1);
     };
   
     _nextPhoto = () => {
       this.setState({
         index: this.state.index + 1,
       });
+      setSnippets(this.props.photos[(this.state.index + 1) % this.props.photos.length].buttons);
+      setCurrent(-1);
     };
   
     render() {
@@ -53,18 +62,18 @@ export default class Slideshow extends React.Component {
         this.state.index % this.props.photos.length
       ];
       
-        if (current.buttons) {
-            console.log('we got extra buttons')
-            extraButtons = current.buttons.map(button => {
-                return <View style={styles.extraButtons}>
-                    <VrButton style={styles.button}>
-                        <Text style={styles.buttonText}>{button}</Text>
-                    </VrButton>
-                </View>
-            })
-        } else {
-            extraButtons = <View/>
-        }
+        // if (current.buttons) {
+        //     console.log('we got extra buttons')
+        //     extraButtons = current.buttons.map(button => {
+        //         return <View style={styles.extraButtons}>
+        //             <VrButton style={styles.button}>
+        //                 <Text style={styles.buttonText}>{button.displayName}</Text>
+        //             </VrButton>
+        //         </View>
+        //     })
+        // } else {
+        //     extraButtons = <View/>
+        // }
       return (
         <View style={styles.wrapper}>
           <Background uri={current.uri} format={current.format} />
@@ -79,7 +88,6 @@ export default class Slideshow extends React.Component {
               <Text style={styles.buttonText}>{'>'}</Text>
             </VrButton>
           </View>
-            {extraButtons}
         </View>
       );
     }

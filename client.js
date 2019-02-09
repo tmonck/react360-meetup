@@ -24,6 +24,7 @@ function init(bundle, parent, options = {}) {
   leftPanel.setAngle(-0.6, 0);
   const rightPanel = new Surface(300, 600, Surface.SurfaceShape.Flat);
   rightPanel.setAngle(0.6, 0);
+  const centerPanel = new Surface(512, 512, Surface.SurfaceShape.Cylinder);
   // Load the initial environment
   r360.renderToSurface(
     r360.createRoot('SlideshowSample', {
@@ -31,11 +32,25 @@ function init(bundle, parent, options = {}) {
         {uri: './static_assets/360_world.jpg', title: '360 World', format: '2D'},
         // Add your own 180 / 360 photos to this array,
         // with an associated title and format
-        {uri: './static_assets/falcon_cockpit_v005_1500_.jpg', title: 'Kessel run in 12 parsecs', format: '3D', buttons: ['yes', 'no']}
+        {
+          uri: './static_assets/falcon_cockpit_v005_1500_.jpg',
+          title: 'Kessel run in 12 parsecs',
+          format: '3D',
+          buttons: [{displayName: 'Chewie', uri: './Chewie_Sq.jpg'}, {displayName: 'Han Solo'}]}
       ],
     }),
     leftPanel,
   );
+
+  r360.renderToSurface(
+    r360.createRoot('CodeSnippetsList'),
+    rightPanel,
+  )
+  
+  r360.renderToSurface(
+    r360.createRoot('CodeSnippet'),
+    centerPanel,
+  )
 }
 
 window.React360 = {init};

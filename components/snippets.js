@@ -5,7 +5,7 @@ import {
   Text,
   VrButton,
 } from 'react-360';
-import {connect, setCurrent, setShowNativeModule} from './Store';
+import {connect, setCurrent, setShowNativeModule} from '../Store';
 
 const CodeSnippetsList = props => {
       if (!props.snippets) {

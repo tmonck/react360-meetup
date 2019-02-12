@@ -6,7 +6,7 @@ import {
   View,
   VrButton,
 } from 'react-360';
-import {connect} from './Store';
+import {connect} from '../Store';
 
 // Extract our custom native module
 const BrowserInfo = NativeModules.BrowserInfo;

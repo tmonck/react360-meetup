@@ -6,7 +6,7 @@ import {
     View,
     VrButton,
 } from 'react-360';
-import { setSnippets, setCurrent } from './Store';
+import { setSnippets, setCurrent } from '../Store';
 
 class Background extends React.Component {
     constructor(props) {

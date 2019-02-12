@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, asset, StyleSheet, Text} from 'react-360';
-import {connect, setShowNativeModule} from './Store';
+import {connect, setShowNativeModule} from '../Store';
 
 class CodeSnippet extends React.Component {
     render() {

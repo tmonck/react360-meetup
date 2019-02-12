@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Image, asset, StyleSheet, Text} from 'react-360';
-import {connect} from './Store';
+import {connect, setShowNativeModule} from './Store';
 
 class CodeSnippet extends React.Component {
     render() {
@@ -12,15 +12,20 @@ class CodeSnippet extends React.Component {
         }
 
         const snippet = this.props.snippets[this.props.current];
-        const source = snippet.uri;
-
-        console.log(snippet);
-        console.log(source);
-        return (
-        <View style={styles.wrapper}>
-            <Image source={asset(source)} style={{height: 600, width: 600}}></Image>
-        </View>
-        )
+        if (snippet.showNativeModule) {
+            setShowNativeModule(true);
+            return null;
+        } else {
+            const source = snippet.uri;
+    
+            console.log(snippet);
+            console.log(source);
+            return (
+            <View style={styles.wrapper}>
+                <Image source={asset(source)} style={{height: 600, width: 600}}></Image>
+            </View>
+            )
+        }
     }
 }
 

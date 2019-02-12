@@ -11,6 +11,7 @@ import * as React from 'react';
 const State = {
   snippets: undefined,
   current: -1,
+  showNativeModule: false
 };
 
 const listeners = new Set();
@@ -36,6 +37,11 @@ export function setSnippets(snippets) {
     console.log(State.snippets);
     updateComponents();
 }
+
+export function setShowNativeModule(show) {
+    console.log('setting showNativeModule');
+    State.showNativeModule = show;
+} 
 
 export function connect(Component) {
   return class Wrapper extends React.Component {

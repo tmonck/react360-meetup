@@ -62,18 +62,6 @@ export default class Slideshow extends React.Component {
         this.state.index % this.props.photos.length
       ];
       
-        // if (current.buttons) {
-        //     console.log('we got extra buttons')
-        //     extraButtons = current.buttons.map(button => {
-        //         return <View style={styles.extraButtons}>
-        //             <VrButton style={styles.button}>
-        //                 <Text style={styles.buttonText}>{button.displayName}</Text>
-        //             </VrButton>
-        //         </View>
-        //     })
-        // } else {
-        //     extraButtons = <View/>
-        // }
       return (
         <View style={styles.wrapper}>
           <Background uri={current.uri} format={current.format} />

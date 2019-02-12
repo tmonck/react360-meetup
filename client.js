@@ -1,30 +1,27 @@
 // This file contains the boilerplate to execute your React app.
 // If you want to modify your application's content, start in "index.js"
 
-import {ReactInstance, Location, Surface} from 'react-360-web';
+import {ReactInstance, Surface} from 'react-360-web';
+import BrowserInfoModule from './BrowserInfoNativeModule';
+// import ModuleTest from './NativeModuleTest';
 
 function init(bundle, parent, options = {}) {
   const r360 = new ReactInstance(bundle, parent, {
     // Add custom options here
     fullScreen: true,
+    nativeModules: [
+      ctx => new BrowserInfoModule(ctx),
+    ],
     ...options,
   });
 
-  // Render your app content to the default cylinder surface
-  // r360.renderToSurface(
-  //   r360.createRoot('Hello360', { /* initial props */ }),
-  //   r360.getDefaultSurface()
-  // );
-  
-  // r360.renderToLocation(
-  //   r360.createRoot('Chewy'),
-  //   new Location([0, -2, -10]),
-  // );
   const leftPanel = new Surface(300, 600, Surface.SurfaceShape.Flat);
   leftPanel.setAngle(-0.6, 0);
   const rightPanel = new Surface(300, 600, Surface.SurfaceShape.Flat);
   rightPanel.setAngle(0.6, 0);
-  const centerPanel = new Surface(512, 512, Surface.SurfaceShape.Cylinder);
+  const centerPanel = new Surface(600, 600, Surface.SurfaceShape.Cylinder);
+  const rearPanel = new Surface(720,600, Surface.SurfaceShape.Flat);
+  rearPanel.setAngle(Math.PI / 2, 0);
   // Load the initial environment
   r360.renderToSurface(
     r360.createRoot('SlideshowSample', {
@@ -36,7 +33,16 @@ function init(bundle, parent, options = {}) {
           uri: './static_assets/falcon_cockpit_v005_1500_.jpg',
           title: 'Kessel run in 12 parsecs',
           format: '3D',
-          buttons: [{displayName: 'Chewie', uri: './Chewie_Sq.jpg'}, {displayName: 'Han Solo'}]}
+          buttons: [{displayName: 'Chewie', uri: './Chewie_Sq.jpg'}, {displayName: 'Han Solo'}]
+        },
+        {
+          uri: './static_assets/panorama12.jpg',
+          title: 'Exploring Native Modules',
+          format: '2D',
+          buttons: [{
+            displayName: 'BrowserNativeModule', showNativeModule: true
+          }]
+        }
       ],
     }),
     leftPanel,
@@ -51,6 +57,10 @@ function init(bundle, parent, options = {}) {
     r360.createRoot('CodeSnippet'),
     centerPanel,
   )
+  r360.renderToSurface(
+    r360.createRoot('NativeModulesSample', {}),
+    centerPanel,
+  );
 }
 
 window.React360 = {init};

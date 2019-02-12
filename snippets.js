@@ -5,7 +5,7 @@ import {
   Text,
   VrButton,
 } from 'react-360';
-import {connect, setCurrent} from './Store';
+import {connect, setCurrent, setShowNativeModule} from './Store';
 
 const CodeSnippetsList = props => {
       if (!props.snippets) {
@@ -16,8 +16,15 @@ const CodeSnippetsList = props => {
       }
       const snippets = props.snippets.map((snippet,i) => {
         return <View style={styles.extraButtons}>
-            <VrButton style={styles.button} onClick={() => setCurrent(i)}>
-                <Text>{snippet.displayName}</Text>
+            <VrButton style={styles.button} onClick={() => {
+                setCurrent(i);
+                if (snippet.showNativeModule){
+                    setShowNativeModule(true);
+                } else {
+                    setShowNativeModule(false);
+                    }
+                    }}>
+                <Text style={styles.buttonText}>{snippet.displayName}</Text>
             </VrButton>
         </View>
     })
@@ -47,9 +54,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#c0c0d0',
-    borderRadius: 5,
-    width: 40,
-    height: 44,
+    borderRadius: 5
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#000000',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
   extraButtons: {
       backgroundColor: 'rgba(0, 0, 0, 0.7)',

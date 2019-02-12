@@ -93,25 +93,16 @@ export default class Slideshow extends React.Component {
         alignItems: 'stretch',
       },
     controls: {
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: 200,
-      padding: 10,
-    },
-    extraButtons: {
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: 150,
-        padding: 10,
+      width: 290,
+      padding: 5,
     },
     title: {
       color: '#ffffff',
       textAlign: 'left',
-      fontSize: 36,
+      fontSize: 20,
       fontWeight: 'bold',
     },
     button: {

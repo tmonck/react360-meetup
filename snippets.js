@@ -63,12 +63,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   extraButtons: {
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
       flexDirection: 'column',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: 150,
-      padding: 10,
+      width: 290,
+      padding: 5,
   },
   greetingBox: {
     padding: 20,

@@ -11,9 +11,46 @@ import * as React from 'react';
 const State = {
   snippets: undefined,
   current: -1,
-  showNativeModule: false
+  showNativeModule: false,
+  animatedEntites: undefined,
+  showAnimatedEntites: false,
+  currentIsAnimatedEntity: false
 };
-
+const POLY_PATH = 'https://poly.googleapis.com/v1/assets?';
+export function initialize(apiKey) {
+  // Fetch the top 5 posts from Google Poly
+  const options = {
+    curated: true,
+    format: 'GLTF2',
+    key: apiKey,
+    pageSize: 5,
+  };
+  
+  const queryString = Object.keys(options)
+    .map(k => `${k}=${options[k]}`)
+    .join('&');
+  fetch(POLY_PATH + queryString)
+    .then(response => response.json())
+    .then(body => {
+      const entries = body.assets.map(asset => {
+        const objSource = asset.formats.filter(
+          format => format.formatType === 'GLTF2'
+        )[0];
+        return {
+          id: asset.name,
+          name: asset.displayName,
+          author: asset.authorName,
+          description: asset.description,
+          source: objSource,
+          preview: asset.thumbnail.url,
+        };
+      });
+      
+      State.animatedEntites = entries;
+      console.log('fetch returned')
+      updateComponents();
+    });
+  }
 const listeners = new Set();
 
 function updateComponents() {
@@ -22,38 +59,49 @@ function updateComponents() {
   }
 }
 
-export function setCurrent(value) {
-    console.log('setting current snippet value');
-    console.log(State.current);
+export function setCurrent(value, isAnimatedEntity=false) {
+  console.log('set current');
+  console.log(value);
+  console.log(isAnimatedEntity);
     State.current = value;
-    console.log(State.current);
+    State.currentIsAnimatedEntity = isAnimatedEntity;
     updateComponents();
 }
 
+export function setShowAnimtatedEntites(value) {
+  console.log('setting show animated entities');
+  console.log(value);
+  State.showAnimatedEntites = value;
+  updateComponents();
+}
+
 export function setSnippets(snippets) {
-    console.log('setting snippets');
-    console.log(snippets);
     State.snippets = snippets;
-    console.log(State.snippets);
     updateComponents();
 }
 
 export function setShowNativeModule(show) {
-    console.log('setting showNativeModule');
     State.showNativeModule = show;
 } 
+
 
 export function connect(Component) {
   return class Wrapper extends React.Component {
     state = {
       snippets: State.snippets,
       current: State.current,
+      showAnimatedEntites: State.showAnimatedEntites,
+      animatedEntites: State.animatedEntites,
+      currentIsAnimatedEntity: State.currentIsAnimatedEntity
     };
 
     _listener = () => {
       this.setState({
         snippets: State.snippets,
         current: State.current,
+        showAnimatedEntites: State.showAnimatedEntites,
+        animatedEntites: State.animatedEntites,
+        currentIsAnimatedEntity: State.currentIsAnimatedEntity
       });
     };
 
@@ -64,6 +112,10 @@ export function connect(Component) {
     componentWillUnmount() {
       listeners.delete(this._listener);
     }
+    componentDidUpdate() {
+      console.log('ive updated');
+      console.log(this.state.currentIsAnimatedEntity);
+    }
 
     render() {
       return (
@@ -71,6 +123,9 @@ export function connect(Component) {
           {...this.props}
           snippets={this.state.snippets}
           current={this.state.current}
+          showAnimatedEntites={this.state.showAnimatedEntites}
+          animatedEntites={this.state.animatedEntites}
+          currentIsAnimatedEntity={this.state.currentIsAnimatedEntity}
         />
       );
     }

@@ -1,32 +1,12 @@
 import React from 'react';
 import {
-    Environment,
     StyleSheet,
     Text,
     View,
     VrButton,
 } from 'react-360';
-import { setSnippets, setCurrent } from '../Store';
-
-class Background extends React.Component {
-    constructor(props) {
-      super();
-      Environment.setBackgroundImage(props.uri, {format: props.format});
-    }
-  
-    componentWillReceiveProps(nextProps) {
-      if (
-        nextProps.uri !== this.props.uri ||
-        nextProps.format !== this.props.format
-      ) {
-        Environment.setBackgroundImage(nextProps.uri, {format: nextProps.format});
-      }
-    }
-  
-    render() {
-      return null;
-    }
-  }
+import Background from '../components/background'
+import { setSnippets, setCurrent, setShowAnimtatedEntites } from '../Store';
 
 export default class Slideshow extends React.Component {
     state = {
@@ -34,8 +14,11 @@ export default class Slideshow extends React.Component {
     };
   
     componentDidMount() {
-      setSnippets(this.props.photos[0].buttons);
+      console.log('i did mount')
+      setSnippets(this.props.photos[this.state.index].snippets);
       setCurrent(-1);
+      console.log(this.props.photos[this.state.index].showAnimatedEntities);
+      setShowAnimtatedEntites(this.props.photos[this.state.index].showAnimatedEntities)
     }
     _prevPhoto = () => {
       let next = this.state.index - 1;
@@ -45,16 +28,26 @@ export default class Slideshow extends React.Component {
       this.setState({
         index: next,
       });
-      setSnippets(this.props.photos[next % this.props.photos.length].buttons);
+      console.log(next);
+      setSnippets(this.props.photos[next % this.props.photos.length].snippets);
       setCurrent(-1);
+      console.log(this.props.photos[next % this.props.photos.length].showAnimatedEntities);
+      setShowAnimtatedEntites(this.props.photos[next % this.props.photos.length].showAnimatedEntities)
+      console.log(this.props.animatedEntites);
     };
   
     _nextPhoto = () => {
-      this.setState({
-        index: this.state.index + 1,
-      });
-      setSnippets(this.props.photos[(this.state.index + 1) % this.props.photos.length].buttons);
+      let next = this.state.index + 1;
+      if (next === this.props.photos.length) {
+      next = 0;
+    }
+    this.setState({
+      index: next,
+    });
+      setSnippets(this.props.photos[next % this.props.photos.length].snippets);
       setCurrent(-1);
+      console.log(this.props.photos[next % this.props.photos.length].showAnimatedEntities);
+      setShowAnimtatedEntites(this.props.photos[next % this.props.photos.length].showAnimatedEntities)
     };
   
     render() {
@@ -66,13 +59,13 @@ export default class Slideshow extends React.Component {
         <View style={styles.wrapper}>
           <Background uri={current.uri} format={current.format} />
           <View style={styles.controls}>
-            <VrButton onClick={this._prevPhoto} style={styles.button}>
+            <VrButton id='previousPhoto' onClick={this._prevPhoto} style={styles.button}>
               <Text style={styles.buttonText}>{'<'}</Text>
             </VrButton>
             <View>
               <Text style={styles.title}>{current.title}</Text>
             </View>
-            <VrButton onClick={this._nextPhoto} style={styles.button}>
+            <VrButton id='nextPhoto' onClick={this._nextPhoto} style={styles.button}>
               <Text style={styles.buttonText}>{'>'}</Text>
             </VrButton>
           </View>

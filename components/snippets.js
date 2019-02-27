@@ -8,13 +8,39 @@ import {
 import {connect, setCurrent, setShowNativeModule} from '../Store';
 
 const CodeSnippetsList = props => {
-      if (!props.snippets) {
-          console.log('we have no snippets')
-          return <View style={styles.wrapper}>
-          <Text>No Snippets for current slide</Text>
-          </View>
-      }
-      const snippets = props.snippets.map((snippet,i) => {
+    console.log('loading code snippetslist')
+    console.log(JSON.stringify(props));
+    console.log(props.animatedEntites);
+    console.log(props.showAnimatedEntites);
+    if (props.showAnimatedEntites) {
+        console.log('i should show animated entities list');
+        if (!props.animatedEntites) {
+            return (
+              <View style={styles.extraButtons}>
+                <Text>Loading...</Text>
+              </View>
+            );
+          }
+        const entities = props.animatedEntites.map((entity,i) => {
+        return <View style={styles.extraButtons}>
+            <VrButton style={styles.button} onClick={() => {
+                setCurrent(i, true);
+                }}>
+                <Text style={styles.buttonText}>{entity.name}</Text>
+            </VrButton>
+        </View>
+        })
+        return (
+            <View style={styles.wrapper}>{entities}</View>
+        );
+    } else if (!props.snippets) {
+        return <View style={styles.wrapper}>
+        <Text>No Snippets for current slide</Text>
+        </View>
+    } else {
+        console.log('adding snippet list');
+        console.log(props.showAnimatedEntities);
+        const snippets = props.snippets.map((snippet,i) => {
         return <View style={styles.extraButtons}>
             <VrButton style={styles.button} onClick={() => {
                 setCurrent(i);
@@ -27,10 +53,12 @@ const CodeSnippetsList = props => {
                 <Text style={styles.buttonText}>{snippet.displayName}</Text>
             </VrButton>
         </View>
-    })
-    return (
-        <View style={styles.wrapper}>{snippets}</View>
-    );
+        })
+        
+        return (
+            <View style={styles.wrapper}>{snippets}</View>
+        );
+    }
 };
 
 const styles = StyleSheet.create({

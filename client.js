@@ -1,7 +1,7 @@
 // This file contains the boilerplate to execute your React app.
 // If you want to modify your application's content, start in "index.js"
 
-import {ReactInstance, Surface} from 'react-360-web';
+import {ReactInstance, Location, Surface} from 'react-360-web';
 import BrowserInfoModule from './modules/BrowserInfoNativeModule';
 
 function init(bundle, parent, options = {}) {
@@ -25,18 +25,24 @@ function init(bundle, parent, options = {}) {
   const rearPanel = new Surface(720,600, Surface.SurfaceShape.Flat);
   rearPanel.setAngle(Math.PI / 2, 0);
 
+  const location = new Location([0, -2, -10]);
   // Load the initial environment
   r360.renderToSurface(
     r360.createRoot('SlideshowSample', {
       photos: [
-        {uri: './static_assets/360_world.jpg', title: '360 World', format: '2D'},
+        {
+          uri: './static_assets/360_world.jpg',
+          title: '360 World',
+          format: '3D',
+          showAnimatedEntities: true
+        },
         // Add your own 180 / 360 photos to this array,
         // with an associated title and format
         {
           uri: './static_assets/falcon_cockpit_v005_1500_.jpg',
           title: 'Kessel run in 12 parsecs',
           format: '3D',
-          buttons: [
+          snippets: [
             {
               displayName: 'Index.js',
               uri: './index_js.jpg'
@@ -49,15 +55,17 @@ function init(bundle, parent, options = {}) {
               displayName: 'Render surfaces',
               uri: './client_js_2.jpg'
             }
-          ]
+          ],
+          showAnimatedEntities: false
         },
         {
           uri: './static_assets/panorama12.jpg',
           title: 'Exploring Native Modules',
           format: '2D',
-          buttons: [{
+          snippets: [{
             displayName: 'BrowserNativeModule', showNativeModule: true
-          }]
+          }],
+          showAnimatedEntities: false
         }
       ],
     }),
@@ -76,6 +84,10 @@ function init(bundle, parent, options = {}) {
   r360.renderToSurface(
     r360.createRoot('NativeModulesSample', {}),
     centerPanel,
+  );
+  r360.renderToLocation(
+    r360.createRoot('AnimatedImage'),
+    location,
   );
 }
 

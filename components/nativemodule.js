@@ -83,7 +83,6 @@ class ModuleTest extends React.Component {
         
         const snippet = this.props.snippets[this.props.current];
         if (!snippet.showNativeModule) {
-            console.log('Returning null from NativeModule');
             return null;
         }
       const {batteryLevel, lastConfirmation} = this.state;

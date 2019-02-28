@@ -7,7 +7,7 @@ import CodeSnippet from './components/snippet';
 import ModuleTest from './components/nativemodule';
 import AnimatedImage from './components/animated_image'
 import * as Store from './Store';
-Store.initialize('AIzaSyAJkZzuCBkoJ27GC2JwNZWU65e4hpqQMaM');
+Store.initialize('');
 
 AppRegistry.registerComponent('SlideshowSample', () => Slideshow);
 AppRegistry.registerComponent('CodeSnippet', () => CodeSnippet);
